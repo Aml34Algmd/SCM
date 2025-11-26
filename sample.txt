@@ -1,0 +1,7 @@
+This is a sample text file for testing the FileUtility tool.
+It contains multiple lines of text.
+Each line demonstrates the line counting feature.
+This file can be used to test the count-lines command.
+The utility should count all lines including this one.
+Total lines should be counted accurately.
+
