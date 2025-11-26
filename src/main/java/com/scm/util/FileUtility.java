@@ -33,6 +33,13 @@ public class FileUtility {
                 }
                 countLines(args[1]);
                 break;
+            case "count-words":
+                if (args.length < 2) {
+                    System.out.println("Error: Please provide a file path");
+                    return;
+                }
+                countWords(args[1]);
+                break;
             case "help":
                 printUsage();
                 break;
@@ -73,6 +80,43 @@ public class FileUtility {
     }
     
     /**
+     * Counts the number of words in a file
+     * 
+     * @param filePath Path to the file
+     */
+    public static void countWords(String filePath) {
+        File file = new File(filePath);
+        
+        if (!file.exists()) {
+            System.out.println("Error: File does not exist: " + filePath);
+            return;
+        }
+        
+        if (!file.isFile()) {
+            System.out.println("Error: Path is not a file: " + filePath);
+            return;
+        }
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            int wordCount = 0;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Split by whitespace and count non-empty strings
+                String[] words = line.trim().split("\\s+");
+                for (String word : words) {
+                    if (!word.isEmpty()) {
+                        wordCount++;
+                    }
+                }
+            }
+            System.out.println("File: " + filePath);
+            System.out.println("Total words: " + wordCount);
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+    
+    /**
      * Prints usage information
      */
     private static void printUsage() {
@@ -83,6 +127,7 @@ public class FileUtility {
         System.out.println();
         System.out.println("Commands:");
         System.out.println("  count-lines <file>  Count the number of lines in a file");
+        System.out.println("  count-words <file>  Count the number of words in a file");
         System.out.println("  help                Show this help message");
     }
 }
