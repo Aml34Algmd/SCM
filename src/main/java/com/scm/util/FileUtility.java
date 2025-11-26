@@ -40,6 +40,10 @@ public class FileUtility {
                 }
                 countWords(args[1]);
                 break;
+            case "search-file":
+                // This feature will be added in the file-search branch
+                System.out.println("Error: File search feature is not yet implemented");
+                break;
             case "help":
                 printUsage();
                 break;
@@ -128,6 +132,7 @@ public class FileUtility {
         System.out.println("Commands:");
         System.out.println("  count-lines <file>  Count the number of lines in a file");
         System.out.println("  count-words <file>  Count the number of words in a file");
+        System.out.println("  search-file <dir> <pattern>  Search for files (coming soon)");
         System.out.println("  help                Show this help message");
     }
 }
