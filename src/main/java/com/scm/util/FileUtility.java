@@ -41,8 +41,11 @@ public class FileUtility {
                 countWords(args[1]);
                 break;
             case "search-file":
-                // This feature will be added in the file-search branch
-                System.out.println("Error: File search feature is not yet implemented");
+                if (args.length < 3) {
+                    System.out.println("Error: Please provide a directory path and search pattern");
+                    return;
+                }
+                searchFile(args[1], args[2]);
                 break;
             case "help":
                 printUsage();
@@ -121,6 +124,62 @@ public class FileUtility {
     }
     
     /**
+     * Searches for files in a directory matching a given pattern
+     * 
+     * @param directoryPath Path to the directory to search
+     * @param pattern Search pattern (filename or part of filename)
+     */
+    public static void searchFile(String directoryPath, String pattern) {
+        File directory = new File(directoryPath);
+        
+        if (!directory.exists()) {
+            System.out.println("Error: Directory does not exist: " + directoryPath);
+            return;
+        }
+        
+        if (!directory.isDirectory()) {
+            System.out.println("Error: Path is not a directory: " + directoryPath);
+            return;
+        }
+        
+        List<File> foundFiles = new ArrayList<>();
+        searchFilesRecursive(directory, pattern, foundFiles);
+        
+        if (foundFiles.isEmpty()) {
+            System.out.println("No files found matching pattern: " + pattern);
+        } else {
+            System.out.println("Found " + foundFiles.size() + " file(s) matching pattern '" + pattern + "':");
+            for (File file : foundFiles) {
+                System.out.println("  " + file.getAbsolutePath());
+            }
+        }
+    }
+    
+    /**
+     * Recursively searches for files matching the pattern
+     * 
+     * @param directory Directory to search
+     * @param pattern Search pattern
+     * @param foundFiles List to store found files
+     */
+    private static void searchFilesRecursive(File directory, String pattern, List<File> foundFiles) {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            return;
+        }
+        
+        for (File file : files) {
+            if (file.isDirectory()) {
+                // Recursively search subdirectories
+                searchFilesRecursive(file, pattern, foundFiles);
+            } else if (file.isFile() && file.getName().contains(pattern)) {
+                // File name contains the pattern
+                foundFiles.add(file);
+            }
+        }
+    }
+    
+    /**
      * Prints usage information
      */
     private static void printUsage() {
@@ -130,10 +189,10 @@ public class FileUtility {
         System.out.println("Usage: java FileUtility <command> [arguments]");
         System.out.println();
         System.out.println("Commands:");
-        System.out.println("  count-lines <file>  Count the number of lines in a file");
-        System.out.println("  count-words <file>  Count the number of words in a file");
-        System.out.println("  search-file <dir> <pattern>  Search for files (coming soon)");
-        System.out.println("  help                Show this help message");
+        System.out.println("  count-lines <file>        Count the number of lines in a file");
+        System.out.println("  count-words <file>        Count the number of words in a file");
+        System.out.println("  search-file <dir> <pattern>  Search for files matching pattern in directory");
+        System.out.println("  help                      Show this help message");
     }
 }
 
