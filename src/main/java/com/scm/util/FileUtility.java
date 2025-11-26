@@ -184,7 +184,7 @@ public class FileUtility {
      */
     private static void printUsage() {
         System.out.println("FileUtility - Java File Utility Tool");
-        System.out.println("Version: 1.0");
+        System.out.println("Version: 1.1");
         System.out.println();
         System.out.println("Usage: java FileUtility <command> [arguments]");
         System.out.println();
